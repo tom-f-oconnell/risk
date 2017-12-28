@@ -47,7 +47,7 @@ def defender_odds(attacking_armies, defending_armies, \
     return 1 - attacker_odds(attacking_armies, defending_armies, \
         attacking_armies_to_use, simulate=simulate)
 
-    
+
 if __name__ == '__main__':
     attacking_armies = 32
     defending_armies = 24
