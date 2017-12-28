@@ -1,0 +1,3 @@
+[submodule "risk-graph"]
+	path = risk-graph
+	url = git://github.com/gnewton/risk-graph
