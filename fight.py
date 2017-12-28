@@ -3,41 +3,50 @@
 import random
 
 def roll():
-    r = random.choice(range(6))
-    return r + 1
+    return 1 + random.choice(range(6))
 
-# TODO function for getting a sorted list with a given number of rolls in it
+# function for getting a sorted list with a given number of rolls in it
 # input: the number of rolls you want in the list
 # (will be used for handling case where where # attacker rolls < 3 
 #  or # defender rolls < 2)
+def nrolls(n):
+    liz = []
+    for i in range(n):
+        liz.append(roll())
+    return sorted(liz, reverse=True) 
 
-# TODO
-# make it stop when defending armies is less than 0
-# make it so it doesnt roll more die than any player has
-# and choice of how many die    
 
-attacking_armies = 10
-defending_armies = 9
+debug = False
 
-# TODO make this change the lengths of the list of attacker rolls
-# should work for 1 and 2 as well
+attacking_armies = 32
+defending_armies = 24
+
 attacking_armies_to_use = 3
+
+print('Total attacking armies is', attacking_armies)
+print('Total defending armies is', defending_armies)
 
 # minimum to attack
 while attacking_armies > 1:
     # TODO use the function you wrote above to generate the lists of rolls here
-    attacker_rolls = sorted([roll(), roll(), roll()], reverse=True)
-    print(attacker_rolls)
+    attacker_rolls = nrolls(min(attacking_armies-1, attacking_armies_to_use))
+    if debug:
+        print('attacker_rolls', attacker_rolls)
 
-    deffender_rolls = sorted([roll(), roll()], reverse=True)
-    print(deffender_rolls)
+    defender_rolls = nrolls(min(defending_armies, 2))
+    if debug:
+        print('defender_rolls', defender_rolls)
     
-    # TODO loop over these two loops to compare from largest to smallest
+    # loop over these two loops to compare from largest to smallest
     # you can use a while loop like above, or a for loop (look up how those work)
     # HINT: loop up to the *length* of the list of the defender rolls
     # there is a function in python that finds the length of a list (look up what it is)
     
-
+    for i in range(min(len(attacker_rolls), len(defender_rolls))):
+        if attacker_rolls[i] > defender_rolls[i]:
+            defending_armies = defending_armies - 1
+        else:
+            attacking_armies = attacking_armies - 1
     # the loops might look *like* either:
     #i = 0
     #while i < length_of_list_function(defender_rolls):
@@ -48,14 +57,20 @@ while attacking_armies > 1:
     #for i in range(length_of_list_function(defender_rolls)):
     #   ... stuff comparing attacker_rolls[i] and defender_rolls[i]
 
-    if attacker_rolls[0] > deffender_rolls[0]:
-        defending_armies = defending_armies - 1
-    else:
-        attacking_armies = attacking_armies - 1
-        
-    if attacker_rolls[1] > deffender_rolls[1]:
-        defending_armies = defending_armies - 1
-    else:
-        attacking_armies = attacking_armies - 1
-        
-    print(attacking_armies)
+    if debug:    
+        print('attacking_armies', attacking_armies)
+        print('defending_armies', defending_armies)
+    
+    if defending_armies == 0:
+        print('ATTACKER WAS SUCCESFUL')
+        print('Attacker must move at least', len(attacker_rolls), 'armies')
+        print('Attacker may only move', attacking_armies - 1)
+        break
+    
+if attacking_armies == 1:
+    print('DEFENDER WAS SUCCESFUL')
+    print('Defending player has', defending_armies, 'armies')
+    
+    
+    
+    
